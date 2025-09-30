@@ -8,6 +8,9 @@ import {
   Typography,
   Skeleton,
   IconButton,
+  AppBar,
+  Toolbar,
+  Tooltip,
 } from "@material-ui/core";
 import Table from "./ui/Table";
 import OutputDrop from "./ui/OutputDrop";
@@ -127,7 +130,9 @@ const App: VFC = () => {
   }, [data]);
 
   const handleChange = (_event: SyntheticEvent, newValue: string) => {
-    setValue(newValue);
+    if(newValue.length > 0) {
+      setValue(newValue);
+    }
   };
 
   const fillDatabase = (parser: ObjData) => {
@@ -243,44 +248,47 @@ const App: VFC = () => {
 
         <OutputDrop OnLoaded={setData} />
 
-        <TabContext value={value}>
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="Data analyze section"
-            >
-              <Tab label="All" value="all" {...a11yProps(0)} />
-              <Tab label="By Module" value="by_module" {...a11yProps(1)} />
-              <Tab label="By File (WIP)" value="by_file" {...a11yProps(2)} />
-              <Tab
-                label="By Section (WIP)"
-                value="by_section"
-                {...a11yProps(3)}
-              />
-              <Tab
-                label="By SubSection (WIP)"
-                value="by_subsection"
-                {...a11yProps(4)}
-              />
-            </Tabs>
-          </Box>
-          <TabPanel value="all">
-            <Table data={allData} columns={AllTableColumnsOrder} />
-          </TabPanel>
-          <TabPanel value="by_module">
-            <Table data={allModules} columns={ModulesTableColumnsOrder} />
-          </TabPanel>
-          <TabPanel value="by_file">
-            <TableSkeleton />
-          </TabPanel>
-          <TabPanel value="by_section">
-            <TableSkeleton />
-          </TabPanel>
-          <TabPanel value="by_subsection">
-            <TableSkeleton />
-          </TabPanel>
-        </TabContext>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="Data analyze section"
+              >
+                <Tab label="All" value="all" {...a11yProps(0)} />
+                <Tab label="By Module" value="by_module" {...a11yProps(1)} />
+                <Tab label="By File (WIP)" value="by_file" {...a11yProps(2)} />
+                <Tab
+                  label="By Section (WIP)"
+                  value="by_section"
+                  {...a11yProps(3)}
+                />
+                <Tab
+                  label="By SubSection (WIP)"
+                  value="by_subsection"
+                  {...a11yProps(4)}
+                />
+                <Tooltip title="Not Implemented">
+                  <Tab onClick={() => console.log("Hello World")} icon={<CloudDownloadIcon />} aria-label="Download Json" />
+                </Tooltip>
+              </Tabs>
+            </Box>
+            <TabPanel value="all">
+              <Table data={allData} columns={AllTableColumnsOrder} />
+            </TabPanel>
+            <TabPanel value="by_module">
+              <Table data={allModules} columns={ModulesTableColumnsOrder} />
+            </TabPanel>
+            <TabPanel value="by_file">
+              <TableSkeleton />
+            </TabPanel>
+            <TabPanel value="by_section">
+              <TableSkeleton />
+            </TabPanel>
+            <TabPanel value="by_subsection">
+              <TableSkeleton />
+            </TabPanel>
+          </TabContext>
       </Box>
     </Container>
   );
